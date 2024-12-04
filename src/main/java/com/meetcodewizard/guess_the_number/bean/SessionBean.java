@@ -1,11 +1,26 @@
 package com.meetcodewizard.guess_the_number.bean;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
 public class SessionBean {
 
+	
 	private Integer userid;
+	
+	@NotNull(message = "Firstname field is mandatory to fill")
+	@Pattern(regexp = "^[a-zA-Z\\s'-]+$", message = "Invalid first name")
 	private String firstname;
+	
+	@NotEmpty(message = "Email field is mandatory to fill")
+	@Email(message = "Please Enter Valid Email Address")
 	private String email;
+	
+	@NotEmpty(message = "Password field is mandatory to fill")
 	private String password;
+	
 	private Integer master_credit;
 	
 	public Integer getUserid() {
