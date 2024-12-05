@@ -29,12 +29,38 @@
 
 		<!-- User List Section -->
 		<div class="card shadow">
-			<div class="card-header bg-info text-white d-flex justify-content-between">
+			<div
+				class="card-header bg-info text-white d-flex justify-content-between">
 				<h3 class="mb-0">User List</h3>
 				<button class="btn btn-danger"
 					onclick="location.href='/gameHistory'">Game History</button>
 			</div>
 			<div class="card-body">
+				<!-- Filter Form -->
+				<form method="POST" action="/filterProcess"
+					class="d-flex mb-3 gap-2">
+					<!-- Dropdown Menu -->
+					<select id="filterType" class="form-select form-control" name="filterType" style="width: 300px">
+						<option value="" selected disabled>Filter by...</option>
+						<option value="stringField"
+							${filterType == 'stringField' ? 'selected' : ''}>Search
+							by String Field</option>
+						<option value="equals" ${filterType == 'equals' ? 'selected' : ''}>Equals</option>
+						<option value="lessThan"
+							${filterType == 'lessThan' ? 'selected' : ''}>Less Than</option>
+						<option value="greaterThan"
+							${filterType == 'greaterThan' ? 'selected' : ''}>Greater
+							Than</option>
+					</select>
+
+
+					<!-- Input Field -->
+					<input type="text" class="form-control w-auto" name="filterValue"
+						placeholder="Enter value" value="${filterValue}">
+
+					<!-- Filter Button -->
+					<button type="submit" class="btn btn-primary">Filter</button>
+				</form>
 				<table class="table table-striped">
 					<thead class="table-dark">
 						<tr>

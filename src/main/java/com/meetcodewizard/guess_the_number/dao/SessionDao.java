@@ -42,15 +42,56 @@ public class SessionDao {
 			return null;
 		}
 	}
-	
+
 	public int updateMasterCredit(SessionBean sessionUser) {
-		int rowsAffected = jdbcTemplate.update("update Users set master_credit=? where userid=?", sessionUser.getMaster_credit(), sessionUser.getUserid());
+		int rowsAffected = jdbcTemplate.update("update Users set master_credit=? where userid=?",
+				sessionUser.getMaster_credit(), sessionUser.getUserid());
 		return rowsAffected;
 	}
-	
+
 	public SessionBean getUser(Integer userId) {
-		SessionBean user = jdbcTemplate.queryForObject("select * from Users where userid=?", new BeanPropertyRowMapper<>(SessionBean.class), new Object[] {userId});
+		SessionBean user = jdbcTemplate.queryForObject("select * from Users where userid=?",
+				new BeanPropertyRowMapper<>(SessionBean.class), new Object[] { userId });
 		return user;
 	}
 
+	public List<SessionBean> filterUsersByName(String filterValue) {
+		try {
+			List<SessionBean> users = jdbcTemplate.query("select * from Users where firstname like ?",
+					new BeanPropertyRowMapper<>(SessionBean.class), new Object[] { "%" + filterValue + "%" });
+			return users;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public List<SessionBean> filterUsersByCreditEquals(String filterValue) {
+		try {
+			List<SessionBean> users = jdbcTemplate.query("select * from Users where master_credit=?",
+					new BeanPropertyRowMapper<>(SessionBean.class), new Object[] { filterValue });
+			return users;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public List<SessionBean> filterUsersByCreditLess(String filterValue) {
+		try {
+			List<SessionBean> users = jdbcTemplate.query("select * from Users where master_credit<?",
+					new BeanPropertyRowMapper<>(SessionBean.class), new Object[] { filterValue });
+			return users;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public List<SessionBean> filterUsersByCreditGreater(String filterValue) {
+		try {
+			List<SessionBean> users = jdbcTemplate.query("select * from Users where master_credit>?",
+					new BeanPropertyRowMapper<>(SessionBean.class), new Object[] { filterValue });
+			return users;
+		} catch (Exception e) {
+			return null;
+		}
+	}
 }
