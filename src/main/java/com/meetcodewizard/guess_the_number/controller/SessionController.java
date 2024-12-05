@@ -26,7 +26,14 @@ public class SessionController {
 	}
 	
 	@GetMapping("/login")
-	public String getLoginPage() {
+	public String getLoginPage(HttpSession session) {
+
+		SessionBean user = (SessionBean) session.getAttribute("sessionUser");
+		
+		if(user != null) {
+			return "redirect:/home";
+		}
+		
 		return "Login";
 	}
 	

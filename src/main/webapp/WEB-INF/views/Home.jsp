@@ -29,8 +29,10 @@
 
 		<!-- User List Section -->
 		<div class="card shadow">
-			<div class="card-header bg-info text-white">
+			<div class="card-header bg-info text-white d-flex justify-content-between">
 				<h3 class="mb-0">User List</h3>
+				<button class="btn btn-danger"
+					onclick="location.href='/gameHistory'">Game History</button>
 			</div>
 			<div class="card-body">
 				<table class="table table-striped">

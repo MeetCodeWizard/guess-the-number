@@ -19,27 +19,29 @@ public class UserController {
 	@Autowired
 	SessionDao sessionDao;
 	
+	
+
 	@GetMapping("/home")
 	public String getHomePage(HttpSession session, Model model) {
-		
+
 		SessionBean sessionUser = (SessionBean) session.getAttribute("sessionUser");
-		
-		if(sessionUser == null) {
+
+		if (sessionUser == null) {
 			model.addAttribute("loginRequest", "Please Login First !!!");
 			return "Login";
 		}
-		
+
 		List<SessionBean> users = sessionDao.getAllUsers();
-		
-		if(users != null) {
+
+		if (users != null) {
 			model.addAttribute("users", users);
-		}else {			
+		} else {
 			System.out.println("No Users Found");
 		}
-		
+
 		users.sort(Comparator.comparingInt(SessionBean::getMaster_credit).reversed());
-		
+
 		return "Home";
 	}
-	
+
 }

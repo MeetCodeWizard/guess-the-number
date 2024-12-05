@@ -1,5 +1,8 @@
 package com.meetcodewizard.guess_the_number.controller;
 
+import java.time.format.TextStyle;
+import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import com.meetcodewizard.guess_the_number.bean.GameBean;
 import com.meetcodewizard.guess_the_number.bean.SessionBean;
@@ -48,7 +52,11 @@ public class GameController {
 	public String playGame(GameBean gameBean, Model model, HttpSession session) {
 
 		SessionBean sessionUser = (SessionBean) session.getAttribute("sessionUser");
-		
+
+		if (sessionUser == null) {
+			model.addAttribute("loginRequest", "Please Login First !!!");
+			return "Login";
+		}
 		// Credit Score
 		Integer creditScore = sessionUser.getMaster_credit();
 		
@@ -141,4 +149,40 @@ public class GameController {
 		return "Play";
 	}
 
+	@GetMapping("/gameHistory")
+	public String getHistoryPage(HttpSession session, Model model) {
+		
+		SessionBean sessionUser = (SessionBean) session.getAttribute("sessionUser");
+
+		if (sessionUser == null) {
+			model.addAttribute("loginRequest", "Please Login First !!!");
+			return "Login";
+		}
+		
+		List<GameBean> logs = gameDao.getUserLogs(sessionUser.getUserid());
+		
+		if(logs == null || logs.size() == 0) {
+//			System.out.println("No Logs for User Found");
+			return "PlayRequest";
+		}
+
+//		System.out.println(logs.size());
+		
+//		for (GameBean log : logs) {
+//			System.out.println(log.getDate().getDayOfMonth() + log.getDate().getMonth().getDisplayName(TextStyle.SHORT,Locale.ENGLISH) + log.getDate().getYear());
+//			System.out.println(log.getDate().toLocalTime());
+//			System.out.println(log.getNumber_guessed());
+//			System.out.println(log.getNumber_generated());
+//			System.out.println(log.getWon());
+//			System.out.println(log.getInitial_credit());
+//			System.out.println(log.getCredit());
+//			System.out.println(log.getFinal_credit());
+//			break;
+//		}
+		
+		model.addAttribute("userLogs", logs);
+		
+		return "GameHistory";
+	}
+	
 }

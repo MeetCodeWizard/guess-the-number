@@ -62,12 +62,15 @@ body {
 				<div
 					class="d-flex justify-content-center align-items-center mb-4 mt-4">
 					<!-- Form for Guess Input and Submit -->
-					<form action="/guessNumberProcess" method="post" class="d-flex align-items-center">
+					<form action="/guessNumberProcess" method="post"
+						class="d-flex align-items-center">
 						<!-- Guess Number Field -->
 						<input type="number" class="form-control w-auto me-2"
-							placeholder="Guess" id="guessNumber" name="number_guessed" value="${guessedNumber}" required>
+							placeholder="Guess" id="guessNumber" name="number_guessed"
+							value="${guessedNumber}" required>
 						<!-- Guess Submit Button -->
-						<input type="submit" class="btn btn-primary px-4" value="Guess" ${creditLimitExceeded != null ? "disabled" : "" }>
+						<input type="submit" class="btn btn-primary px-4" value="Guess"
+							${creditLimitExceeded != null ? "disabled" : "" }>
 						<%-- <input type="submit" class="btn btn-primary px-4" value="Guess" ${creditScore <= 0 ? "disabled" : "" }> --%>
 					</form>
 				</div>
@@ -96,6 +99,17 @@ body {
 
 	<!-- Bootstrap Bundle with Popper -->
 	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+		const currentDateTime = new Date().toISOString();
+		fetch('/api/guessNumberProcess', {
+			method : 'POST',
+			headers : {
+				'Content-Type' : 'application/json'
+			},
+			body : JSON.stringify({
+				clientDateTime : currentDateTime,
+			}),
+		});
+	</script>
 </body>
 </html>
