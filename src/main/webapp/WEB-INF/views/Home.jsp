@@ -19,8 +19,10 @@
 			<h1>Welcome to the Game</h1>
 			<!-- Buttons in One Line -->
 			<div class="d-flex justify-content-center gap-3 mt-4">
-				<button class="btn btn-primary btn-lg"
+				<button class="btn btn-success btn-lg"
 					onclick="location.href='/play'">Play</button>
+				<button class="btn btn-primary btn-lg"
+					onclick="location.href='/home'">Home</button>
 				<button class="btn btn-danger btn-lg"
 					onclick="location.href='/logout'">Logout</button>
 			</div>
@@ -40,7 +42,8 @@
 				<form method="POST" action="/filterProcess"
 					class="d-flex mb-3 gap-2">
 					<!-- Dropdown Menu -->
-					<select id="filterType" class="form-select form-control" name="filterType" style="width: 300px">
+					<select id="filterType" class="form-select form-control"
+						name="filterType" style="width: 300px">
 						<option value="" selected disabled>Filter by...</option>
 						<option value="stringField"
 							${filterType == 'stringField' ? 'selected' : ''}>Search
@@ -61,6 +64,9 @@
 					<!-- Filter Button -->
 					<button type="submit" class="btn btn-primary">Filter</button>
 				</form>
+				<p class="px-1 text-danger">${filterSelectError}</p>
+				<p class="px-1 text-danger">${filterInputError}</p>
+				<p class="px-1 text-danger">${invalidNumber}</p>
 				<table class="table table-striped">
 					<thead class="table-dark">
 						<tr>

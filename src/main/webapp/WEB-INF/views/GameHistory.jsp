@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" isELIgnored="false" %>
+	pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.Locale" %>
-<%@ page import="java.time.format.TextStyle" %>
+<%@ page import="java.util.Locale"%>
+<%@ page import="java.time.format.TextStyle"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,7 +17,17 @@
 </head>
 <body>
 	<div class="container my-5">
-		<h2 class="text-center mb-4">Game History</h2>
+		<!-- align-items-center -->
+		<div
+			class="d-flex align-items-center justify-content-between gap-4 mt-4 mb-4">
+			<h2 class="mb-0">Game History</h2>
+			<div class="d-flex gap-3">
+				<a href="/home" class="btn btn-outline-primary">Dashboard</a> <a
+					href="/play" class="btn btn-outline-success">Play</a>
+			</div>
+		</div>
+
+
 		<div class="table-responsive">
 			<table class="table table-bordered table-striped table-hover">
 				<thead class="table-primary text-center">
@@ -38,7 +48,9 @@
 					<c:forEach var="log" items="${userLogs}" varStatus="status">
 						<tr>
 							<td>${status.index+1}</td>
-							<td>${log.getDate().getDayOfMonth()} ${log.getDate().getMonth().getDisplayName(TextStyle.SHORT,Locale.ENGLISH)}  ${log.getDate().getYear()}</td>
+							<td>${log.getDate().getDayOfMonth()}
+								${log.getDate().getMonth().getDisplayName(TextStyle.SHORT,Locale.ENGLISH)}
+								${log.getDate().getYear()}</td>
 							<td>${log.getDate().toLocalTime()}</td>
 							<td>${log.getNumber_guessed()}</td>
 							<td>${log.getNumber_generated()}</td>
@@ -59,9 +71,6 @@
 					</c:forEach>
 				</tbody>
 			</table>
-		</div>
-		<div class="text-center mt-4">
-			<a href="/home" class="btn btn-primary">Dashboard</a>
 		</div>
 	</div>
 

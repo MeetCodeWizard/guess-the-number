@@ -43,44 +43,63 @@ public class UserController {
 
 		return "Home";
 	}
-	
+
 	@PostMapping("/filterProcess")
 	public String getFilteredDashboard(FilterBean filterBean, Model model) {
-		
+
 		String filterType = filterBean.getFilterType();
 		String filterValue = filterBean.getFilterValue();
-		
-		List<SessionBean> users = null;
-		
-		if(filterType.equals("stringField")) {
-			// Correct Filter value
-			users = sessionDao.filterUsersByName(filterValue);
-		}else {
-			// Parse Filter Value into Integer
-			Integer intFilterValue = Integer.parseInt(filterValue);
 
-			if(filterType.equals("equals")) {
-				users = sessionDao.filterUsersByCreditEquals(filterValue);
-			}else if(filterType.equals("lessThan")) {
-				users = sessionDao.filterUsersByCreditLess(filterValue);
-			}else if(filterType.equals("greaterThan")) {
-				users = sessionDao.filterUsersByCreditGreater(filterValue);
+		List<SessionBean> users = null;
+
+		Boolean inputError = false;
+
+		
+		if (filterType == null) {
+			model.addAttribute("filterSelectError", "Please Select Filter Type");
+			inputError = true;
+		}
+
+		if (filterValue.trim().length() == 0) {
+			model.addAttribute("filterInputError", "Please Enter Filter Value");
+			inputError = true;
+		}
+
+		if (!inputError) {
+			if (filterType.equals("stringField")) {
+				// Correct Filter value
+				users = sessionDao.filterUsersByName(filterValue);
+			} else {
+				Integer intFilterValue = null;
+				try {
+					// Parse Filter Value into Integer
+					intFilterValue = Integer.parseInt(filterValue);
+				} catch (NumberFormatException e) {
+					model.addAttribute("invalidNumber", "Please Enter the Integer for Filtering with Comparison");
+					inputError = true;
+				}
+
+				if(intFilterValue != null) {			
+					if (filterType.equals("equals")) {
+						users = sessionDao.filterUsersByCreditEquals(filterValue);
+					} else if (filterType.equals("lessThan")) {
+						users = sessionDao.filterUsersByCreditLess(filterValue);
+					} else if (filterType.equals("greaterThan")) {
+						users = sessionDao.filterUsersByCreditGreater(filterValue);
+					}
+				}
 			}
+
+			if(users != null)
+				users.sort(Comparator.comparingInt(SessionBean::getMaster_credit).reversed());
+
 		}
-		
-		if(users == null) {
-			System.out.println("Call Out");
-			return "redirect:/home";
-		}
-		
+
 		model.addAttribute("filterType", filterBean.getFilterType());
 		model.addAttribute("filterValue", filterBean.getFilterValue());
 		model.addAttribute("users", users);
-		users.sort(Comparator.comparingInt(SessionBean::getMaster_credit).reversed());
-		
+
 		return "Home";
 	}
-	
-	
-	
+
 }
